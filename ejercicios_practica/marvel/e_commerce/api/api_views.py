@@ -341,3 +341,35 @@ class DestroyWishListAPIView(DestroyAPIView):
     queryset = WishList.objects.all()
     serializer_class = WishListSerializer
     permission_classes = (IsAuthenticated,)
+
+class GetUserFavsAPIView(ListAPIView):
+    '''
+    `[METODO GET]`
+    Esta vista devuelve todos los comics favoritos de un usuario.
+    Recibe el username por la URL: /favs/<username>/get
+    '''
+    serializer_class = ComicSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        try:
+            # 1. Obtener el username de la URL
+            username = self.kwargs['username']
+
+            # 2. Buscar al usuario
+            user = User.objects.filter(username=username).first()
+            if not user:
+                return Comic.objects.none()
+
+            # 3. Buscar wishlist donde favorite=True
+            wishlist_items = WishList.objects.filter(user=user, favorite=True)
+
+            # 4. Obtener lista de IDs de comics favoritos
+            comics_ids = [item.comic_id for item in wishlist_items]
+
+            # 5. Retornar queryset de comics
+            return Comic.objects.filter(id__in=comics_ids)
+
+        except Exception as error:
+            print(f"Error en la API Mixta: {error}")
+            return Comic.objects.none()
