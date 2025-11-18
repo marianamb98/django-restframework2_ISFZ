@@ -310,4 +310,34 @@ class LoginUserAPIView(APIView):
 # TODO: Agregar las vistas genericas(vistas de API basadas en clases) 
 # que permitan realizar un CRUD del modelo de wish-list.
 # TODO: Crear una vista generica modificada(vistas de API basadas en clases)
+
 # para traer todos los comics que tiene un usuario.
+class ListCreateWishListAPIView(ListCreateAPIView):
+    '''
+    `[METODO GET-POST]`
+    Devuelve todas las wishlist del sistema (GET)
+    Permite insertar una nueva wishlist (POST)
+    '''
+    queryset = WishList.objects.all()
+    serializer_class = WishListSerializer
+    permission_classes = (IsAuthenticated,)  # Solo usuarios logueados
+
+
+class RetrieveUpdateWishListAPIView(RetrieveUpdateAPIView):
+    '''
+    `[METODO GET-PUT-PATCH]`
+    Permite obtener una wishlist en particular o actualizarla.
+    '''
+    queryset = WishList.objects.all()
+    serializer_class = WishListSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class DestroyWishListAPIView(DestroyAPIView):
+    '''
+    `[METODO DELETE]`
+    Permite eliminar una wishlist del sistema.
+    '''
+    queryset = WishList.objects.all()
+    serializer_class = WishListSerializer
+    permission_classes = (IsAuthenticated,)
