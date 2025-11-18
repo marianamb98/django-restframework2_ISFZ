@@ -55,5 +55,32 @@ class TokenSerializer(serializers.ModelSerializer):
         model = Token
         fields = ('key', 'user')
         
+class WishListSerializer(serializers.ModelSerializer):
+    # Para poder escribir los IDs de las FK
+    user_id = serializers.PrimaryKeyRelatedField(
+        write_only=True,
+        queryset=User.objects.all(),
+        source='user'
+    )
+
+    comic_id = serializers.PrimaryKeyRelatedField(
+        write_only=True,
+        queryset=Comic.objects.all(),
+        source='comic'
+    )
+
+    # Para mostrar el comic completo al hacer GET
+    comic = ComicSerializer(read_only=True)
+
+    class Meta:
+        model = WishList
+        fields = (
+            'id',
+            'user_id',      # write-only
+            'comic_id',     # write-only
+            'comic',        # read-only
+            'favorite',
+            'created_at',   # si tu modelo tiene este campo
+        )
 
 # TODO: Realizar el serializador para el modelo de WishList
