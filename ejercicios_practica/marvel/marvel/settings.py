@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third party apps: acá vamos agregando las aplicaciones de terceros, extensiones de Django.
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
 ]
 
 REST_FRAMEWORK = {
@@ -157,3 +158,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AMARILLO = "\033[;33m"
 CIAN = "\033[;36m"
 VERDE = "\033[;32m"
+
